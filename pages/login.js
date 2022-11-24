@@ -1,8 +1,14 @@
 import Head from 'next/head';
 import Layout from '../layout/layout';
 import Link from 'next/link';
+import styles from '../styles/Form.module.css';
+import Image from 'next/image';
+import { HiAtSymbol, HiFingerPrint } from 'react-icons/hi';
+import { useState } from 'react';
 
-const login = () => {
+export default function Login() {
+  const [show, setShow] = useState(false);
+
   return (
     <Layout>
       <Head>
@@ -20,24 +26,57 @@ const login = () => {
           </p>
         </div>
         <form className='flex flex-col gap-5'>
-          <div className='input-groups'>
-            <input type='email' name='email' placeholder='Email' />
-          </div>
-          <div className='input-groups'>
+          <div className={styles.input_group}>
             <input
-              type='password'
+              type='email'
+              name='email'
+              placeholder='Email'
+              className={styles.input_text}
+            />
+            <span className='icon flex items-center px-4'>
+              <HiAtSymbol size={25} />
+            </span>
+          </div>
+          <div className={styles.input_group}>
+            <input
+              type={`${show ? 'text' : 'password'}`}
               name='password'
               placeholder='Password'
+              className={styles.input_text}
             />
+            <span
+              className='icon flex items-center px-4'
+              onClick={() => setShow(!show)}
+            >
+              <HiFingerPrint size={25} />
+            </span>
           </div>
           <div className='input-button'>
-            <button type='submit'>Login</button>
+            <button type='submit' className={styles.button}>
+              Login
+            </button>
           </div>
           <div className='input-button'>
-            <button type='submit'>Sign In with GitHub</button>
+            <button type='button' className={styles.button_custom}>
+              Sign In with GitHub
+              <Image
+                src={'/assets/github.svg'}
+                width='23'
+                height='23'
+                alt='github'
+              />
+            </button>
           </div>
           <div className='input-button'>
-            <button type='submit'>Sign In With Google</button>
+            <button type='button' className={styles.button_custom}>
+              Sign In With Google
+              <Image
+                src={'/assets/google.svg'}
+                width='20'
+                height='20'
+                alt='google'
+              />
+            </button>
           </div>
         </form>
 
@@ -49,6 +88,4 @@ const login = () => {
       </section>
     </Layout>
   );
-};
-
-export default login;
+}
