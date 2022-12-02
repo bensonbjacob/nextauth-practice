@@ -1,9 +1,10 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
+import { getSession, useSession } from 'next-auth/react';
 
 export default function Home() {
-  const [session, setSession] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <div>
@@ -11,7 +12,7 @@ export default function Home() {
         <title>Home</title>
       </Head>
 
-      {session ? User() : Guest()}
+      {session ? User({ session }) : Guest()}
     </div>
   );
 }
@@ -31,13 +32,13 @@ function Guest() {
 }
 
 //Authorized Users
-function User() {
+function User({ session }) {
   return (
     <main className='container mx-auto text-center py-20'>
       <h3 className='text-4xl font-bold'>User Homepage</h3>
       <div className='details'>
-        <h5>Unknown</h5>
-        <h5>Unknown</h5>
+        <h5>{session.user.name}</h5>
+        <h5>{session.user.email}</h5>
       </div>
       <div className='flex justify-center'>
         <button className='mt-5 px-10 py-1 rounded-sm bg-indigo-500 text-gray-50'>
@@ -51,4 +52,20 @@ function User() {
       </div>
     </main>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
 }
