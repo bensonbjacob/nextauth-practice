@@ -10,6 +10,7 @@ import {
 } from 'react-icons/hi';
 import { useState } from 'react';
 import { useFormik } from 'formik';
+import { registerValidate } from '../lib/validate';
 
 export default function Register() {
   const [show, setShow] = useState({
@@ -23,6 +24,7 @@ export default function Register() {
       password: '',
       cpassword: '',
     },
+    validate: registerValidate,
     onSubmit,
   });
 
@@ -61,6 +63,13 @@ export default function Register() {
               <HiOutlineUser size={25} />
             </span>
           </div>
+          {formik.errors.username && formik.touched.username ? (
+            <span className='text-rose-500'>
+              {formik.errors.username}
+            </span>
+          ) : (
+            <></>
+          )}
           <div className={styles.input_group}>
             <input
               type='email'
@@ -73,6 +82,13 @@ export default function Register() {
               <HiAtSymbol size={25} />
             </span>
           </div>
+          {formik.errors.email && formik.touched.email ? (
+            <span className='text-rose-500'>
+              {formik.errors.email}
+            </span>
+          ) : (
+            <></>
+          )}
           <div className={styles.input_group}>
             <input
               type={`${show.password ? 'text' : 'password'}`}
@@ -90,6 +106,13 @@ export default function Register() {
               <HiFingerPrint size={25} />
             </span>
           </div>
+          {formik.errors.password && formik.touched.password ? (
+            <span className='text-rose-500'>
+              {formik.errors.password}
+            </span>
+          ) : (
+            <></>
+          )}
           <div className={styles.input_group}>
             <input
               type={`${show.cpassword ? 'text' : 'password'}`}
@@ -107,6 +130,13 @@ export default function Register() {
               <HiFingerPrint size={25} />
             </span>
           </div>
+          {formik.errors.cpassword && formik.touched.cpassword ? (
+            <span className='text-rose-500'>
+              {formik.errors.cpassword}
+            </span>
+          ) : (
+            <></>
+          )}
           <div className='input-button'>
             <button type='submit' className={styles.button}>
               Register
