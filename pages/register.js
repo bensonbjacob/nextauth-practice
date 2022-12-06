@@ -11,12 +11,14 @@ import {
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import { registerValidate } from '../lib/validate';
+import { useRouter } from 'next/router';
 
 export default function Register() {
   const [show, setShow] = useState({
     password: false,
     cpassword: false,
   });
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -28,7 +30,19 @@ export default function Register() {
     onSubmit,
   });
 
-  async function onSubmit(values) {}
+  async function onSubmit(values) {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    };
+
+    await fetch('http://localhose:3000/api/auth/signup', options)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) router.push('http://localhost:3000');
+      });
+  }
 
   return (
     <Layout>
